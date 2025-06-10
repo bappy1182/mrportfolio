@@ -1,0 +1,315 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mahmudur Rahman - Professional Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .section-header {
+            border-bottom: 2px solid #4b5563;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <!-- Navbar -->
+    <nav class="bg-gray-800 text-white p-4 fixed w-full top-0 z-10">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">Mahmudur Rahman</h1>
+            <ul class="flex space-x-4">
+                <li><a href="#home" class="hover:text-gray-300">Home</a></li>
+                <li><a href="#experience" class="hover:text-gray-300">Experience</a></li>
+                <li><a href="#education" class="hover:text-gray-300">Education</a></li>
+                <li><a href="#certifications" class="hover:text-gray-300">Certifications</a></li>
+                <li><a href="#contact" class="hover:text-gray-300">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="pt-20 pb-10 bg-gray-900 text-white text-center">
+        <div class="container mx-auto">
+            <h1 class="text-4xl font-bold mb-4">Mahmudur Rahman</h1>
+            <p class="text-xl mb-6">Business Development Manager | Cybersecurity & IT Specialist | 18+ Years in Supply Chain & Commercial Operations</p>
+            <a href="#contact" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">Contact Me</a>
+            <a href="https://bit.ly/MahmudurResume" target="_blank" class="ml-4 bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">Download Resume</a>
+        </div>
+    </section>
+
+    <!-- Career Objective -->
+    <section id="objective" class="py-10">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-4 section-header">Career Objective</h2>
+            <p class="text-lg">Eager to excel as a Business Development Manager, leveraging 18+ years in commercial, supply chain, logistics, and IT systems management. Skilled in cybersecurity, data analytics, and leadership, I drive operational excellence and strategic growth through innovative technology solutions.</p>
+        </div>
+    </section>
+
+    <!-- Accomplishments -->
+    <section id="accomplishments" class="py-10 bg-gray-200">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-4 section-header">Accomplishments</h2>
+            <ul class="list-disc pl-6">
+                <li>Service Loyalty Award & Certification for 15 Years of Service, Epyllion Group, Bangladesh.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Professional Experience -->
+    <section id="experience" class="py-10">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-4 section-header">Professional Experience</h2>
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold">Assistant Manager - Commercial & Supply Chain Management</h3>
+                <p class="text-gray-600">Epyllion Group, Dhaka, Bangladesh | July 2018 - Present</p>
+                <ul class="list-disc pl-6">
+                    <li>Managed import/export, banking, and documentation operations.</li>
+                    <li>Opened textile LCs via ERP, reducing processing time by 20%.</li>
+                    <li>Integrated IT systems and cybersecurity measures for data security.</li>
+                    <li>Led contract management, reducing risks by 15%.</li>
+                </ul>
+            </div>
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold">Senior Executive - Commercial & Supply Chain Management</h3>
+                <p class="text-gray-600">Epyllion Group, Dhaka, Bangladesh | July 2015 - July 2018</p>
+                <ul class="list-disc pl-6">
+                    <li>Handled import/export documentation and banking.</li>
+                    <li>Ensured cybersecurity compliance, reducing incidents by 10%.</li>
+                    <li>Optimized cross-departmental initiatives for performance.</li>
+                </ul>
+            </div>
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold">Executive - Commercial & Supply Chain Management</h3>
+                <p class="text-gray-600">Epyllion Group, Dhaka, Bangladesh | January 2011 - July 2015</p>
+                <ul class="list-disc pl-6">
+                    <li>Managed packaging and accessories import/export.</li>
+                    <li>Handled customs bond processes (in-bond, ex-bond, UP, UD, audits).</li>
+                    <li>Standardized export and local documentation.</li>
+                </ul>
+            </div>
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold">Assistant Executive - Commercial & IT</h3>
+                <p class="text-gray-600">Epyllion Group, Dhaka, Bangladesh | July 2007 - July 2011</p>
+                <ul class="list-disc pl-6">
+                    <li>Supported packaging import/export and customs bond.</li>
+                    <li>Provided IT hardware and network system support.</li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-xl font-semibold">Group Leader - Administration & Data Analysis</h3>
+                <p class="text-gray-600">Sobar Jonno, Dhaka, Bangladesh | February 2005 - July 2007</p>
+                <ul class="list-disc pl-6">
+                    <li>Led hardware, software, and network system management.</li>
+                    <li>Developed PMIS database for Bangladesh Air Force.</li>
+                    <li>Improved decision-making efficiency by 25%.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education -->
+    <section id="education" class="py-10 bg-gray-200">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-4 section-header">Education</h2>
+            <div class="mb-4">
+                <h3 class="text-xl font-semibold">MBA in Management Information Systems</h3>
+                <p class="text-gray-600">Ahsanullah University of Science and Technology, Dhaka | 2014</p>
+                <p>CGPA: 2.7/4.0</p>
+            </div>
+            <div class="mb-4">
+                <h3 class="text-xl font-semibold">BSc in Computer Science & Engineering</h3>
+                <p class="text-gray-600">The Peoples University of Bangladesh, Dhaka | 2009</p>
+                <p>CGPA: 2.72/4.0</p>
+            </div>
+            <div class="mb-4">
+                <h3 class="text-xl font-semibold">Diploma in Computer Science & Engineering</h3>
+                <p class="text-gray-600">Ideal Institute of Science & Technology, Dhaka | 2006</p>
+                <p>CGPA: 3.47/4.0</p>
+            </div>
+            <div>
+                <h3 class="text-xl font-semibold">Secondary School Certificate - Science</h3>
+                <p class="text-gray-600">Municipal Model High School, Chittagong | 1998</p>
+                <p>First Division (60%)</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certifications -->
+    <section id="certifications" class="py-10">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-4 section-header">Certifications</h2>
+            <ul class="list-disc pl-6">
+                <li>Introduction to Cybersecurity, CISCO Networking Academy, April 2025</li>
+                <li>Basics of Python, Cambridge International Qualification, UK & UNIATHENA, January 2025</li>
+                <li>Google Analytics, Coursera, June 2022</li>
+                <li>Content & Creative Design, LinkedIn Marketing Lab, July 2024</li>
+                <li>Marketing Fundamentals, LinkedIn Marketing Lab, March 2024</li>
+                <li>Marketing Strategy, LinkedIn Marketing Lab, July 2024</li>
+                <li>Computer Science (Programming, Hardware, Network), Bangladesh Atomic Energy Commission, February 2006</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Skills and Competencies -->
+    <section id="skills" class="py-10 bg-gray-200">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-4 section-header">Skills and Competencies</h2>
+            <ul class="grid grid-cols-2 gap-4">
+                <li>Cybersecurity & Data Protection</li>
+                <li>Commercial Operations & Compliance</li>
+                <li>Computer Engineering Fundamentals</li>
+                <li>Team Management</li>
+                <li>Data Analytics & IT Solutions</li>
+                <li>Leadership & Project Management</li>
+                <li>Proactive Problem Solving</li>
+                <li>Cross-Functional Collaboration</li>
+                <li>Graphics Design</li>
+                <li>AI Tools & Prompts</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Projects and Achievements -->
+    <section id="projects" class="py-10">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-4 section-header">Projects and Achievements</h2>
+            <ul class="list-disc pl-6">
+                <li>Leadership Development Training, Epyllion Group, 2015</li>
+                <li>Fire Fighting, Fire Rescue & First Aid Training, Bangladesh Fire Service, 2016</li>
+                <li>Developed PMIS Database for Bangladesh Air Force, Sobar Jonno, 2005–2007</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Internship -->
+    <section id="internship" class="py-10 bg-gray-200">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-4 section-header">Internship</h2>
+            <div>
+                <h3 class="text-xl font-semibold">Computer Science Teacher</h3>
+                <p class="text-gray-600">Bangladesh Atomic Energy Commission, Savar, Dhaka | November 2005 - February 2006</p>
+                <ul class="list-disc pl-6">
+                    <li>Taught programming languages (C, C++, SQL, Java).</li>
+                    <li>Configured computer networking (server, LAN/WAN setup).</li>
+                    <li>Provided hardware and software installation services.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Extracurricular Activities -->
+    <section id="extracurricular" class="py-10">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-4 section-header">Extracurricular Activities</h2>
+            <ul class="list-disc pl-6">
+                <li>Guinness World Record: Longest Single Line of Moving Bicycles, BDCyclists, Dhaka, December 2017</li>
+                <li>Finisher: Run for Awareness & World Diabetes Day, Sailor (Epyllion Group), Dhaka, December 2020</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Languages -->
+    <section id="languages" class="py-10 bg-gray-200">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-4 section-header">Languages</h2>
+            <ul class="list-disc pl-6">
+                <li>Bengali: Native</li>
+                <li>English: Proficient</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Hobbies -->
+    <section id="hobbies" class="py-10">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-4 section-header">Hobbies</h2>
+            <ul class="list-disc pl-6">
+                <li>Badminton, Cricket, Football, Chess, Carom, Billiard</li>
+                <li>Computer Games, Reading Books, Gardening, Drawing</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- References -->
+    <section id="references" class="py-10 bg-gray-200">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-4 section-header">References</h2>
+            <div>
+                <h3 class="text-xl font-semibold">Mahmuda Akter</h3>
+                <p class="text-gray-600">PhD Fellow, Monash University Malaysia</p>
+                <p>Phone: +60108917946 | Email: Mahmuda.Akter@monash.edu</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-10 bg-gray-900 text-white text-center">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-4 section-header">Contact Me</h2>
+            <p class="text-lg mb-4">Interested in collaborating? Reach out!</p>
+            <p>Email: <a href="mailto:bappy1182@gmail.com" class="underline">bappy1182@gmail.com</a></p>
+            <p>Phone: +880 1626078889</p>
+            <p>LinkedIn: <a href="https://linkedin.com/in/mahmudur-rahman-bappy-a443bb71" target="_blank" class="underline">linkedin.com/in/mahmudur-rahman-bappy-a443bb71</a></p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white p-4 text-center">
+        <p>&copy; 2025 Mahmudur Rahman. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navbar links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
